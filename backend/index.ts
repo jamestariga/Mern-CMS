@@ -1,9 +1,9 @@
-import express from 'express'
+import express, { Express, Request, Response } from 'express'
 import cors from 'cors'
 import credentials from './Middleware/credentials'
 import corsOption from './Configs/corsOptions'
 
-const app = express()
+const app: Express = express()
 
 // Handle options credentials check before CORS and fetch cookies credentials requirement
 app.use(credentials)
@@ -11,8 +11,10 @@ app.use(credentials)
 // Cors middleware
 app.use(cors(corsOption))
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
+app.get('/', (req: Request, res: Response) => {
+  res.send({
+    message: 'Hello World',
+  })
 })
 
 app.listen(3001, () => {
