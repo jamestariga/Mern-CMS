@@ -1,9 +1,4 @@
-import User from '../Model/User'
-
-interface Users {
-  firstName: string
-  lastName: string
-}
+import User, { Users } from '../Model/User'
 
 interface Response {
   status: (code: number) => Response
@@ -15,7 +10,7 @@ interface Request {
   body: {
     firstName: string
     lastName: string
-    id: string
+    _id: string
   }
   params: {
     id: string
@@ -39,7 +34,7 @@ export const createUser = async (req: Request, res: Response) => {
 }
 
 export const getAllUsers = async (req: Request, res: Response) => {
-  const users = await User.find({})
+  const users: Array<Users> = await User.find({})
 
   if (!users) {
     return res.status(404).send({
@@ -55,7 +50,7 @@ export const getUserById = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Missing required fields' })
   }
 
-  const user = await User.findOne({ _id: req.params.id }).exec()
+  const user: Users | null = await User.findOne({ _id: req.params.id }).exec()
 
   if (!user) {
     return res.status(204).json({
@@ -67,15 +62,15 @@ export const getUserById = async (req: Request, res: Response) => {
 }
 
 export const updateUser = async (req: Request, res: Response) => {
-  if (!req?.body?.id) {
+  if (!req?.body?._id) {
     return res.status(400).json({ message: 'Missing required fields' })
   }
 
-  const user = await User.findOne({ _id: req.body.id }).exec()
+  const user: Users | null = await User.findOne({ _id: req.body._id }).exec()
 
   if (!user) {
     return res.status(204).json({
-      message: `No employee matches ID: ${req.body.id}.`,
+      message: `No employee matches ID: ${req.body._id}.`,
     })
   }
 
@@ -89,19 +84,19 @@ export const updateUser = async (req: Request, res: Response) => {
 }
 
 export const deleteUser = async (req: Request, res: Response) => {
-  if (!req?.body?.id) {
+  if (!req?.body?._id) {
     return res.status(400).json({ message: 'Missing required fields' })
   }
 
-  const user = await User.findOne({ _id: req.body.id }).exec()
+  const user: Users | null = await User.findOne({ _id: req.body._id }).exec()
 
   if (!user) {
     return res.status(204).json({
-      message: `No employee matches ID: ${req.body.id}.`,
+      message: `No employee matches ID: ${req.body._id}.`,
     })
   }
 
-  const result = await user.deleteOne({ _id: req.body.id })
+  const result = await user.deleteOne({ _id: req.body._id })
 
   res.json(result)
 }
