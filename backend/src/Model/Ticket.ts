@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose'
+import { Schema, Document, Types, model } from 'mongoose'
 
-interface Ticket {
+export interface Tickets extends Document<Types.ObjectId> {
   title: string
   description: string
   status: string
@@ -8,7 +8,7 @@ interface Ticket {
   type: string
 }
 
-const TicketSchema = new Schema<Ticket>({
+const TicketSchema = new Schema<Tickets>({
   title: {
     type: String,
     required: true,
@@ -31,4 +31,4 @@ const TicketSchema = new Schema<Ticket>({
   },
 })
 
-export default model<Ticket>('Ticket', TicketSchema)
+export default model<Tickets>('Ticket', TicketSchema)
