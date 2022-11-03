@@ -1,12 +1,11 @@
-import { Schema, Types, model } from 'mongoose'
+import { Schema, Document, Types, model } from 'mongoose'
 
-interface User {
+export interface Users extends Document<Types.ObjectId> {
   firstName: string
   lastName: string
-  // password: string
 }
 
-const UserSchema = new Schema<User>({
+const UserSchema = new Schema<Users>({
   firstName: {
     type: String,
     required: true,
@@ -15,10 +14,6 @@ const UserSchema = new Schema<User>({
     type: String,
     required: true,
   },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
 })
 
-export default model<User>('User', UserSchema)
+export default model<Users>('User', UserSchema)
