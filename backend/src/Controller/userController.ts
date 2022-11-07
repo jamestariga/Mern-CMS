@@ -10,6 +10,8 @@ interface Request {
   body: {
     firstName: string
     lastName: string
+    userName: string
+    password?: string
     _id: string
   }
   params: {
@@ -18,14 +20,28 @@ interface Request {
 }
 
 export const createUser = async (req: Request, res: Response) => {
-  if (!req?.body?.firstName || !req?.body?.lastName) {
+  if (
+    !req?.body?.firstName ||
+    !req?.body?.lastName ||
+    !req?.body?.userName ||
+    !req?.body?.password
+  ) {
     return res.status(400).json({ message: 'Missing required fields' })
+  }
+
+  // check if user already exists
+  const user = await User.findOne({ userName: req.body.userName })
+
+  if (user) {
+    return res.status(400).json({ message: 'User already exists' })
   }
 
   try {
     const result: Users = await User.create({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
+      userName: req.body.userName,
+      password: req.body.password,
     })
     res.status(201).send(result)
   } catch (err) {
@@ -77,6 +93,10 @@ export const updateUser = async (req: Request, res: Response) => {
   if (req.body?.firstName) user.firstName = req.body.firstName
 
   if (req.body?.lastName) user.lastName = req.body.lastName
+
+  if (req.body?.userName) user.userName = req.body.userName
+
+  if (req.body?.password) user.password = req.body.password
 
   const result = await user.save()
 
