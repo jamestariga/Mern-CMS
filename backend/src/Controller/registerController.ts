@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 
 export const handleNewUser = async (req: Request, res: Response) => {
-  const { userName, password, firstName, lastName } = req.body
+  const { userName, password, firstName, lastName }: Users = req.body
 
   if (!userName || !password || !firstName || !lastName) {
     return res.status(400).json({ message: 'Missing required fields' })
