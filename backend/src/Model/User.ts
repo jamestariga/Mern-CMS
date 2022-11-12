@@ -6,7 +6,7 @@ export interface Users extends Document<Types.ObjectId> {
   lastName: string
   userName: string
   password: string
-  roles: Roles[]
+  roles: Roles
   refreshToken: string
 }
 
@@ -33,8 +33,14 @@ const UserSchema = new Schema<Users>({
       type: Number,
       default: 2001,
     },
-    Editor: Number,
-    Admin: Number,
+    Admin: {
+      type: Number,
+      default: 0,
+    },
+    Editor: {
+      type: Number,
+      default: 0,
+    },
   },
   refreshToken: String,
 })
