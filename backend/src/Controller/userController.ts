@@ -1,4 +1,5 @@
 import User, { Users } from '../Model/User'
+import * as bcrypt from 'bcrypt'
 
 interface Response {
   status: (code: number) => Response
@@ -11,7 +12,9 @@ interface Request {
     firstName: string
     lastName: string
     userName: string
-    password?: string
+    password: string
+    admin?: boolean
+    editor?: boolean
     _id: string
   }
   params: {
@@ -19,29 +22,37 @@ interface Request {
   }
 }
 
+enum RoleNumbers {
+  Admin = 5150,
+  Editor = 1984,
+}
+
 export const createUser = async (req: Request, res: Response) => {
-  if (
-    !req?.body?.firstName ||
-    !req?.body?.lastName ||
-    !req?.body?.userName ||
-    !req?.body?.password
-  ) {
+  const { userName, password, firstName, lastName, admin, editor } = req.body
+  if (!userName || !password || !firstName || !lastName) {
     return res.status(400).json({ message: 'Missing required fields' })
   }
 
   // check if user already exists
-  const user = await User.findOne({ userName: req.body.userName })
+  const user: Users | null = await User.findOne({ userName: userName })
 
   if (user) {
     return res.status(400).json({ message: 'User already exists' })
   }
 
   try {
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     const result: Users = await User.create({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      userName: req.body.userName,
-      password: req.body.password,
+      userName: userName,
+      password: hashedPassword,
+      firstName: firstName,
+      lastName: lastName,
+      roles: {
+        User: 2001,
+        Editor: editor ? 1984 : 0,
+        Admin: admin ? 5150 : 0,
+      },
     })
     res.status(201).send(result)
   } catch (err) {
@@ -97,6 +108,14 @@ export const updateUser = async (req: Request, res: Response) => {
   if (req.body?.userName) user.userName = req.body.userName
 
   if (req.body?.password) user.password = req.body.password
+
+  if (req.body?.admin) user.roles.Admin = RoleNumbers.Admin
+
+  if (req.body?.editor) user.roles.Editor = RoleNumbers.Editor
+
+  if (req.body?.admin === false) user.roles.Admin = 0
+
+  if (req.body?.editor === false) user.roles.Editor = 0
 
   const result = await user.save()
 
