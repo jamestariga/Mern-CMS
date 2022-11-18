@@ -1,4 +1,5 @@
 import User, { Users } from '../Model/User'
+import { Roles } from '../Configs/rolesList'
 import * as bcrypt from 'bcrypt'
 import * as JWT from 'jsonwebtoken'
 import { Request, Response } from 'express'
@@ -27,7 +28,7 @@ export const handleLogin = async (req: Request, res: Response) => {
   const passwordMatch = await bcrypt.compare(password, foundUser.password)
 
   if (passwordMatch) {
-    const roles = Object.values(foundUser.roles).filter(Boolean)
+    const roles: Roles[] = Object.values(foundUser.roles).filter(Boolean)
 
     const accessToken: string = JWT.sign(
       {
