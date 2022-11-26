@@ -1,7 +1,8 @@
 import { Schema, Document, Types, model } from 'mongoose'
 
-export interface Reviews extends Document<Types.ObjectId> {
-  name: string
+export interface Reviews {
+  userName: string
+  title: string
   rating: number
   comment: string
 }
@@ -15,6 +16,8 @@ export interface Products extends Document<Types.ObjectId> {
   category: string
   stock: number
   reviews: Reviews[]
+  numReviews: number
+  rating: number
   image: {
     public_id: string
     url: string
@@ -23,7 +26,11 @@ export interface Products extends Document<Types.ObjectId> {
 
 const ReviewSchema = new Schema<Reviews>(
   {
-    name: {
+    userName: {
+      type: String,
+      required: true,
+    },
+    title: {
       type: String,
       required: true,
     },
@@ -73,6 +80,10 @@ const ProductSchema = new Schema<Products>(
       required: true,
     },
     reviews: [ReviewSchema],
+    numReviews: {
+      type: Number,
+      default: 0,
+    },
     image: {
       public_id: {
         type: String,
