@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import { Users } from '../Model/User'
 import { Roles } from '../Configs/rolesList'
 
-interface RequestWithUser extends Request {
+export interface RequestWithUser extends Request {
   user: Users
   roles: Roles[]
 }
