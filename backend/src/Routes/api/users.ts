@@ -6,6 +6,8 @@ import {
   updateUser,
   deleteUser,
 } from '../../Controller/userController'
+import verifyRoles from '../../Middleware/verifyRoles'
+import ROLES_LIST from '../../Configs/rolesList'
 
 const router: Router = express.Router()
 
