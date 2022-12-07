@@ -69,7 +69,8 @@ export const getAllUsers = async (req: Request, res: Response) => {
     })
   }
 
-  res.json(users)
+  // Add a data property to the response
+  res.status(200).json({ data: users })
 }
 
 export const getUserById = async (req: Request, res: Response) => {
