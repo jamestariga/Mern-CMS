@@ -82,7 +82,7 @@ export const getProducts = async (req: Request, res: Response) => {
     })
   }
 
-  res.json(products)
+  res.json({ data: products })
 }
 
 export const getProduct = async (req: Request, res: Response) => {
