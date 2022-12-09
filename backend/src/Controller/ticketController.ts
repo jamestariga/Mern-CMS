@@ -86,7 +86,7 @@ export const getAllTickets = async (req: Request, res: Response) => {
     })
   }
 
-  res.json(tickets)
+  res.json({ data: tickets })
 }
 
 export const getTicketById = async (req: Request, res: Response) => {
