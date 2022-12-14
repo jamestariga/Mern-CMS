@@ -16,3 +16,20 @@ export interface Population {
   data: PopulationRequest[]
   source: {}[]
 }
+
+export interface Roles {
+  User: number
+  Admin: number
+  Editor: number
+}
+
+export interface UserRequest {
+  firstName: string
+  lastName: string
+  _id: string
+  roles: Roles
+}
+
+export interface User {
+  data: UserRequest[]
+}
