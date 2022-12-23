@@ -8,3 +8,11 @@ body {
   font-family: 'Poppins', sans-serif;
   scroll-behavior: smooth;
 }
+
+p {
+  font-size: 1.25vh;
+}
+
+header {
+  padding: 8rem 0 8rem 0;
+}
