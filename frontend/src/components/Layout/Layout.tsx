@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { useLayoutEffect } from 'react'
+import NavBar from '@/components/Navbar'
 
 const Wrapper = ({ children }: any) => {
   const location = useLocation()
@@ -13,6 +14,7 @@ const Wrapper = ({ children }: any) => {
 const Layout = () => {
   return (
     <Wrapper>
+      <NavBar />
       <Outlet />
     </Wrapper>
   )
