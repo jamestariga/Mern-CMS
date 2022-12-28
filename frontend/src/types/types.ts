@@ -33,3 +33,16 @@ export interface UserRequest {
 export interface User {
   data: UserRequest[]
 }
+
+export interface registerUser {
+  userName: string
+  password: string
+  firstName: string
+  lastName: string
+}
+
+export interface registerResponse {
+  data: any
+  success: string
+  status: number
+}
