@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { User } from '../types/types'
 
+export default axios.create({
+  baseURL: 'http://localhost:3001/',
+})
+
 const cmsApi = axios.create({
   baseURL: 'http://localhost:3001/',
 })
