@@ -46,3 +46,19 @@ export interface registerResponse {
   success: string
   status: number
 }
+
+export interface loginUser {
+  userName: string
+  password: string
+}
+
+export interface loginResponse {
+  data: any
+}
+
+export interface ContextInterface {
+  auth: {}
+  setAuth: React.Dispatch<React.SetStateAction<{}>>
+  persist: any
+  setPersist: React.Dispatch<React.SetStateAction<boolean | string>>
+}
