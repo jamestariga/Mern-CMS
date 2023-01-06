@@ -16,3 +16,7 @@ p {
 header {
   padding: 8rem 0 8rem 0;
 }
+
+input {
+  background-color: #f2f2f2;
+}
