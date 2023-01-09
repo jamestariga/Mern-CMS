@@ -1,8 +1,13 @@
 import axios from 'axios'
-import { User } from '../types/types'
 
 export default axios.create({
   baseURL: 'http://localhost:3001/',
+})
+
+export const cmsApiPrivate = axios.create({
+  baseURL: 'http://localhost:3001/',
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 })
 
 const cmsApi = axios.create({
@@ -17,8 +22,8 @@ export const getContent = async () => {
   return data
 }
 
-export const getUser = async () => {
-  const { data } = await cmsApi.get<User>('/user')
+export const getAllProduct = async () => {
+  const { data } = await cmsApi.get('/product')
 
   console.log(data.data)
 
