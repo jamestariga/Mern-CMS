@@ -1,12 +1,26 @@
 import { createContext, ReactNode, useState } from 'react'
-import { ContextInterface } from '@/types/types'
+import { ContextInterface, Auth } from '@/types/types'
 
-const AuthContext = createContext<ContextInterface>({} as ContextInterface)
+const AuthContext = createContext<ContextInterface>({
+  auth: {
+    accessToken: '',
+    refreshToken: '',
+    roles: [],
+  },
+  setAuth: () => {},
+  persist: false,
+  setPersist: () => {},
+})
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [auth, setAuth] = useState<{}>({})
-  const [persist, setPersist] = useState<boolean>(
-    JSON.parse(localStorage.getItem('persist') || '') || false
+  const persistItem = localStorage.getItem('persist')
+  const [auth, setAuth] = useState<Auth>({
+    accessToken: '',
+    refreshToken: '',
+    roles: [],
+  })
+  const [persist, setPersist] = useState<string | boolean>(
+    typeof persistItem === 'string' ? JSON.parse(persistItem) : false
   )
 
   return (
