@@ -2,12 +2,14 @@ import { useState, useEffect, useRef } from 'react'
 import useAuth from '@/hooks/useAuth'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import cmsApi from '@/api/cmsApi'
-import { loginUser, loginResponse } from '@/types/types'
+import { Auth, loginResponse } from '@/types/types'
 import { useMutation } from '@tanstack/react-query'
+import { boolToString } from '@/utils/helpers'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
 const LOGIN_URL = '/auth'
 
-const loginFn = async (props: loginUser) => {
+const loginFn = async (props: Auth) => {
   const { userName, password } = props
 
   const response: loginResponse = await cmsApi.post(
@@ -30,6 +32,7 @@ const Login = () => {
   const [password, setPassword] = useState<string>('')
   const [errMsg, setErrMsg] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   const userRef = useRef<HTMLInputElement>(null)
   const errRef = useRef<HTMLDivElement>(null)
@@ -50,11 +53,26 @@ const Login = () => {
   }, [userName, password])
 
   useEffect(() => {
-    localStorage.setItem('persist', persist.toString())
+    console.log('persist value:', persist)
+    localStorage.setItem('persist', boolToString(persist))
   }, [persist])
 
   const togglePersist = () => {
-    setPersist((persist: boolean) => !persist)
+    setPersist((persist) => {
+      if (typeof persist === 'boolean') {
+        return !persist
+      }
+      return persist
+    })
+  }
+
+  const togglePassword = () => {
+    setShowPassword((showPassword) => {
+      if (typeof showPassword === 'boolean') {
+        return !showPassword
+      }
+      return showPassword
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -100,16 +118,16 @@ const Login = () => {
   }
 
   return (
-    <div className='flex flex-col items-center justify-center h-screen'>
+    <header className='flex flex-col items-center justify-center h-screen'>
       <form
         onSubmit={handleSubmit}
-        className='flex flex-col items-center justify-center w-96'
+        className='flex flex-col items-center justify-center w-72 sm:w-96'
       >
         <h1 className='text-3xl font-bold'>Login</h1>
         <div className='flex flex-col items-center justify-center w-full mt-4'>
           <div className='flex flex-col items-center justify-center w-full'>
             <label htmlFor='user' className='text-sm font-bold'>
-              User
+              Username
             </label>
             <input
               ref={userRef}
@@ -124,13 +142,26 @@ const Login = () => {
             <label htmlFor='password' className='text-sm font-bold'>
               Password
             </label>
-            <input
-              id='password'
-              type='password'
-              className='w-full px-2 py-1 mt-1 border border-gray-300 rounded focus:outline-none focus:border-blue-300'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className='w-full flex items-center'>
+              <input
+                id='password'
+                type={showPassword ? 'text' : 'password'}
+                className='w-full px-2 py-1 mt-1 border border-gray-300 rounded focus:outline-none focus:border-blue-300'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type='button'
+                className='absolute w-8 h-8 translate-x-[16rem] sm:translate-x-[22rem]'
+                onClick={togglePassword}
+              >
+                {showPassword ? (
+                  <AiFillEyeInvisible className='w-6 h-6 text-blue-500' />
+                ) : (
+                  <AiFillEye className='w-6 h-6 text-blue-500' />
+                )}
+              </button>
+            </div>
           </div>
           <div className='flex items-center justify-between w-full mt-4'>
             <div className='flex items-center'>
@@ -138,7 +169,13 @@ const Login = () => {
                 id='persist'
                 type={'checkbox'}
                 className='w-4 h-4 mt-1 border border-gray-300 rounded focus:outline-none focus:border-blue-300'
-                checked={persist}
+                checked={
+                  boolToString(persist) === 'true'
+                    ? true
+                    : persist === true
+                    ? true
+                    : false
+                }
                 onChange={togglePersist}
               />
               <label htmlFor='persist' className='ml-2 text-sm font-bold'>
@@ -162,7 +199,7 @@ const Login = () => {
           </button>
         </div>
       </form>
-    </div>
+    </header>
   )
 }
 
