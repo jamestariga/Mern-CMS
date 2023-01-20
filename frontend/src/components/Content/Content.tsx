@@ -1,23 +1,23 @@
-import { getUser } from '@/api/cmsApi'
-import { useQuery } from '@tanstack/react-query'
-import { User, UserRequest } from '../../types/types'
+import { IContent, IProduct } from '@/types/types'
 
-const Content = () => {
-  const { data, isLoading, isError } = useQuery<User, Error>(['content'], () =>
-    getUser()
-  )
-
-  const { data: userData } = data || {}
+const Content = (props: IContent) => {
+  const { data, title } = props
 
   return (
-    <div>
-      {userData?.map((item: UserRequest) => (
-        <div key={item._id}>
-          <h1>{item.firstName}</h1>
-          <p>{item.lastName}</p>
+    <header className='flex flex-col items-center justify-center px-4'>
+      <h1>{title}</h1>
+      {data?.map((item: IProduct) => (
+        <div
+          key={item._id}
+          className='flex flex-col justify-center items-center'
+        >
+          <h1>{item.name}</h1>
+          <p>{item.price}</p>
+          <p>{item.description}</p>
+          <img src={item.image.url} alt='' />
         </div>
       ))}
-    </div>
+    </header>
   )
 }
 
