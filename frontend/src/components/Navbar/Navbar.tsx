@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import useEventListener from '@/hooks/useEventListener'
-import { FaChevronDown, FaChevronRight } from 'react-icons/fa'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import { NavLink } from 'react-router-dom'
 
@@ -36,27 +35,35 @@ const NavBar = () => {
               className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
             >
               <li tabIndex={0}>
-                <a>Home</a>
+                <NavLink
+                  to='/admin'
+                  className={({ isActive }) =>
+                    isActive ? `bg-blue-700 text-white` : `text-gray-400`
+                  }
+                  end
+                >
+                  Home
+                </NavLink>
               </li>
               <li>
-                <a>Movies</a>
+                <NavLink
+                  to='/dog'
+                  className={({ isActive }) =>
+                    isActive ? `bg-blue-700 text-white` : `text-gray-400`
+                  }
+                >
+                  Dog
+                </NavLink>
               </li>
               <li>
-                <a>
-                  Shows
-                  <FaChevronRight className='h-4 w-4 text-blue-500' />
-                </a>
-                <ul className='p-2'>
-                  <li>
-                    <a>Series</a>
-                  </li>
-                  <li>
-                    <a>Others</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a>Item 3</a>
+                <NavLink
+                  to='/login'
+                  className={({ isActive }) =>
+                    isActive ? `bg-blue-700 text-white` : `text-gray-400`
+                  }
+                >
+                  Login
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -68,7 +75,7 @@ const NavBar = () => {
           <ul className='menu menu-horizontal p-0 text-xl font-bold space-x-6'>
             <li tabIndex={0}>
               <NavLink
-                to='/'
+                to='/admin'
                 className={({ isActive }) =>
                   isActive ? `bg-blue-700 text-white` : `text-gray-400`
                 }
@@ -78,9 +85,6 @@ const NavBar = () => {
               </NavLink>
             </li>
             <li>
-              <a>Movies</a>
-            </li>
-            <li>
               <NavLink
                 to='/dog'
                 className={({ isActive }) =>
@@ -88,20 +92,17 @@ const NavBar = () => {
                 }
               >
                 Dog
-                <FaChevronDown
-                  className={`h-4 w-4 ${
-                    isScrolled ? `text-blue-400` : `text-blue-600`
-                  }`}
-                />
               </NavLink>
-              <ul className='p-2'>
-                <li>
-                  <a>Series</a>
-                </li>
-                <li>
-                  <a>Others</a>
-                </li>
-              </ul>
+            </li>
+            <li>
+              <NavLink
+                to='/login'
+                className={({ isActive }) =>
+                  isActive ? `bg-blue-700 text-white` : `text-gray-400`
+                }
+              >
+                Login
+              </NavLink>
             </li>
           </ul>
         </div>
