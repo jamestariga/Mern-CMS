@@ -8,12 +8,12 @@ const access = `${process.env.ACCESS_TOKEN_SECRET}`
 export const handleRefreshToken = async (req: Request, res: Response) => {
   const cookies: any = req.cookies
 
-  if (!cookies.jwt) return res.sendStatus(401)
+  if (!cookies?.jwt) return res.sendStatus(401)
 
   const refreshToken: string = cookies.jwt
 
   const foundUser: Users | null = await User.findOne({
-    refreshToken: refreshToken,
+    refreshToken,
   }).exec()
 
   if (!foundUser) return res.sendStatus(403)
@@ -33,6 +33,11 @@ export const handleRefreshToken = async (req: Request, res: Response) => {
       access,
       { expiresIn: '90s' }
     )
-    res.json({ roles, accessToken })
+    const rolesList = foundUser.roles
+
+    // create boolean that determines if user is admin or editor
+    const isAuthorized = rolesList.Admin || rolesList.Editor ? true : false
+
+    res.json({ roles, accessToken, rolesList, isAuthorized })
   })
 }

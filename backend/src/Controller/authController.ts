@@ -20,7 +20,7 @@ export const handleLogin = async (req: Request, res: Response) => {
   }
 
   const foundUser: Users | null = await User.findOne({
-    userName: userName,
+    userName,
   }).exec()
 
   if (!foundUser) return res.sendStatus(401)
@@ -29,6 +29,11 @@ export const handleLogin = async (req: Request, res: Response) => {
 
   if (passwordMatch) {
     const roles: Roles[] = Object.values(foundUser.roles).filter(Boolean)
+
+    const rolesList = foundUser.roles
+
+    // create boolean that determines if user is admin or editor
+    const isAuthorized = rolesList.Admin || rolesList.Editor ? true : false
 
     const accessToken: string = JWT.sign(
       {
@@ -57,11 +62,18 @@ export const handleLogin = async (req: Request, res: Response) => {
       httpOnly: true,
       sameSite: 'none',
       // Add secure: true when using https
-      // secure: true,
+      secure: true,
       maxAge: 1000 * 60 * 60 * 24,
     })
 
-    res.json({ userName, password, roles, accessToken })
+    res.json({
+      userName,
+      password,
+      roles,
+      rolesList,
+      accessToken,
+      isAuthorized,
+    })
   } else {
     res.sendStatus(401)
   }
