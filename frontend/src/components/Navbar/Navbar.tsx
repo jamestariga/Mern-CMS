@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useEventListener from '@/hooks/useEventListener'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import { NavLink } from 'react-router-dom'
+import useAuth from '@/hooks/useAuth'
 
 const NavBar = () => {
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [isScrolled, setIsScrolled] = useState<boolean>(false)
+  const { auth } = useAuth()
 
   const handleScroll = () => {
     if (window.innerWidth > 1020) {
@@ -17,6 +19,10 @@ const NavBar = () => {
   }
 
   useEventListener('scroll', handleScroll)
+
+  const isAuthorized = auth.isAuthorized
+
+  console.log('isAuthorized', isAuthorized)
 
   return (
     <>
@@ -47,12 +53,12 @@ const NavBar = () => {
               </li>
               <li>
                 <NavLink
-                  to='/dog'
+                  to='/admin'
                   className={({ isActive }) =>
                     isActive ? `bg-blue-700 text-white` : `text-gray-400`
                   }
                 >
-                  Dog
+                  Admin
                 </NavLink>
               </li>
               <li>
@@ -75,23 +81,13 @@ const NavBar = () => {
           <ul className='menu menu-horizontal p-0 text-xl font-bold space-x-6'>
             <li tabIndex={0}>
               <NavLink
-                to='/admin'
+                to='/home'
                 className={({ isActive }) =>
                   isActive ? `bg-blue-700 text-white` : `text-gray-400`
                 }
                 end
               >
                 Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to='/dog'
-                className={({ isActive }) =>
-                  isActive ? `bg-blue-700 text-white` : `text-gray-400`
-                }
-              >
-                Dog
               </NavLink>
             </li>
             <li>
@@ -104,6 +100,18 @@ const NavBar = () => {
                 Login
               </NavLink>
             </li>
+            {isAuthorized && (
+              <li>
+                <NavLink
+                  to='/admin'
+                  className={({ isActive }) =>
+                    isActive ? `bg-blue-700 text-white` : `text-gray-400`
+                  }
+                >
+                  Admin
+                </NavLink>
+              </li>
+            )}
           </ul>
         </div>
       </nav>
