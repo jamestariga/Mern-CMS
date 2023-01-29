@@ -11,6 +11,7 @@ const AuthContext = createContext<ContextInterface>({
       User: 2001,
       Editor: 0,
     },
+    isAuthorized: false,
   },
   setAuth: () => {},
   persist: false,
@@ -28,6 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       User: 2001,
       Editor: 0,
     },
+    isAuthorized: false,
   })
   const [persist, setPersist] = useState<string | boolean>(
     typeof persistItem === 'string' ? JSON.parse(persistItem) : false
