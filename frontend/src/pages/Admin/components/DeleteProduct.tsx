@@ -1,5 +1,6 @@
-import { IDeleteProduct } from '@/types/types'
+import { IDeleteProduct, IProduct } from '@/types/types'
 import { useMutation } from '@tanstack/react-query'
+import { Card, Button } from 'react-daisyui'
 
 const DeleteProduct = (props: IDeleteProduct) => {
   const { data, axiosPrivate } = props
@@ -24,21 +25,27 @@ const DeleteProduct = (props: IDeleteProduct) => {
 
   return (
     <>
-      <div className='flex flex-col justify-center items-center p-4'>
-        <h2 className='font-bold text-2xl'>Product List</h2>
-        <ul>
-          {data?.map((product: any) => (
-            <li key={product._id} className='py-4'>
-              <p className='font-bold text-xl'>{product.name}</p>
-              <button
-                className='btn'
-                onClick={() => deleteProductMutation.mutate(product._id)}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+      <h2 className='font-bold text-2xl text-center'>Product List</h2>
+      <div className='flex justify-center items-center p-4'>
+        {data?.map((product: IProduct) => (
+          <Card key={product._id} bordered={false} className=''>
+            <Card.Body className='items-center text-center p-2'>
+              <Card.Image src={product.image.url} className='rounded-xl' />
+              <Card.Title className='font-bold text-xl'>
+                {product.name}
+              </Card.Title>
+              <Card.Actions>
+                <Button
+                  onClick={() =>
+                    deleteProductMutation.mutate(parseInt(product._id))
+                  }
+                >
+                  Delete
+                </Button>
+              </Card.Actions>
+            </Card.Body>
+          </Card>
+        ))}
       </div>
     </>
   )
