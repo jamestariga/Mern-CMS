@@ -34,6 +34,42 @@ export interface User {
   data: UserRequest[]
 }
 
+interface Image {
+  url: string
+  public_id: string
+}
+
+interface Review {
+  useName: string
+  rating: number
+  title: string
+  comment: string
+  createdAt: string
+  _id: string
+}
+
+export interface IProduct {
+  _id: string
+  name: string
+  brand: string
+  category: string
+  price: number
+  slug: string
+  description: string
+  reviews: Review[]
+  stock: number
+  image: Image
+}
+
+export interface Product {
+  data: IProduct[]
+}
+
+export interface IContent {
+  data: IProduct[] | undefined
+  title: string
+}
+
 export interface registerUser {
   userName: string
   password: string
@@ -47,18 +83,31 @@ export interface registerResponse {
   status: number
 }
 
-export interface loginUser {
-  userName: string
-  password: string
+export interface Auth {
+  accessToken: string
+  refreshToken?: string
+  userName?: string
+  password?: string
+  roles: Roles[]
+  rolesList: Roles
+  isAuthorized: boolean
 }
 
 export interface loginResponse {
-  data: any
+  data: Auth
 }
 
 export interface ContextInterface {
-  auth: {}
-  setAuth: React.Dispatch<React.SetStateAction<{}>>
-  persist: any
-  setPersist: React.Dispatch<React.SetStateAction<boolean | string>>
+  auth: Auth
+  setAuth: React.Dispatch<React.SetStateAction<Auth>>
+  persist: string | boolean
+  setPersist: React.Dispatch<React.SetStateAction<string | boolean>>
+}
+
+export interface ICreateProduct {
+  axiosPrivate: any
+}
+
+export interface IDeleteProduct extends ICreateProduct {
+  data: IProduct[] | undefined
 }
