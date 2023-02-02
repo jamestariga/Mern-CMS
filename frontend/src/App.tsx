@@ -11,7 +11,7 @@ import { wait } from '@/utils/helpers'
 const Layout = React.lazy(() =>
   wait(1000).then(() => import('@/components/Layout'))
 )
-const Dog = React.lazy(() => wait(1000).then(() => import('@/components/Dog')))
+const Admin = React.lazy(() => wait(1000).then(() => import('@/pages/Admin')))
 const Populations = React.lazy(() =>
   wait(1000).then(() => import('@/components/Populations'))
 )
@@ -44,11 +44,11 @@ const App = () => {
           <Route path='/' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route element={<PersistLogin />}>
-            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-              <Route path='/dog' element={<Dog />} />
-            </Route>
             <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-              <Route path='/admin' element={<Home />} />
+              <Route path='/admin' element={<Admin />} />
+            </Route>
+            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+              <Route path='/home' element={<Home />} />
             </Route>
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               <Route path='/population' element={<Populations />} />
