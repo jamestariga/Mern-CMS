@@ -10,6 +10,7 @@ import connectDB from './Configs/dbConn'
 import user from './Routes/api/users'
 import ticket from './Routes/api/tickets'
 import product from './Routes/api/product'
+import publicProduct from './Routes/api/publicProduct'
 import register from './Routes/register'
 import auth from './Routes/auth'
 import logout from './Routes/logout'
@@ -45,12 +46,13 @@ app.use('/register', register)
 app.use('/auth', auth)
 app.use('/logout', logout)
 app.use('/refresh', refresh)
+app.use('/publicProducts', publicProduct)
 
-// app.use(verifyJWT)
+app.use(verifyJWT)
 
+app.use('/product', product)
 app.use('/user', user)
 app.use('/ticket', ticket)
-app.use('/product', product)
 
 mongoose.connection.once('open', () => {
   console.log('Connected to database')
