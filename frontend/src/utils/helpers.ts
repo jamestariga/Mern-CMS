@@ -5,6 +5,10 @@ export const boolToString = (data: any) => {
   return data
 }
 
+export const wait = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 export const ROLES = {
   User: 2001,
   Editor: 1984,
