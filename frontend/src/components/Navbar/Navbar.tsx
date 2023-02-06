@@ -51,16 +51,18 @@ const NavBar = () => {
                   Home
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to='/admin'
-                  className={({ isActive }) =>
-                    isActive ? `bg-blue-700 text-white` : `text-gray-400`
-                  }
-                >
-                  Admin
-                </NavLink>
-              </li>
+              {isAuthorized && (
+                <li>
+                  <NavLink
+                    to='/admin'
+                    className={({ isActive }) =>
+                      isActive ? `bg-blue-700 text-white` : `text-gray-400`
+                    }
+                  >
+                    Admin
+                  </NavLink>
+                </li>
+              )}
               <li>
                 <NavLink
                   to='/login'
