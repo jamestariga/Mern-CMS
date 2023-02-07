@@ -26,7 +26,7 @@ const DeleteProduct = (props: IDeleteProduct) => {
   return (
     <>
       <h2 className='font-bold text-2xl text-center'>Product List</h2>
-      <div className='flex justify-center items-center p-4'>
+      <div className='grid grid-cols-4 items-center justify-center gap-4 px-10'>
         {data?.map((product: IProduct) => (
           <Card key={product._id} bordered={false} className=''>
             <Card.Body className='items-center text-center p-2'>
