@@ -84,18 +84,40 @@ const Login = () => {
         password,
         roles: [],
         accessToken: '',
+        rolesList: {
+          Admin: 5150,
+          User: 2001,
+          Editor: 1984,
+        },
+        isAuthorized: false,
       })
       const roles = data.roles
       const accessToken = data.accessToken
+      const rolesList = data.rolesList
+      const isAuthorized = data.isAuthorized
 
       console.log(data)
 
       console.log('roles: ', roles)
       console.log('accessToken: ', accessToken)
 
-      mutate.mutate({ userName, password, roles, accessToken })
+      mutate.mutate({
+        userName,
+        password,
+        roles,
+        accessToken,
+        rolesList,
+        isAuthorized,
+      })
 
-      setAuth({ userName, password, roles, accessToken })
+      setAuth({
+        userName,
+        password,
+        roles,
+        accessToken,
+        rolesList,
+        isAuthorized,
+      })
       setUserName('')
       setPassword('')
       navigate(from, { replace: true })
