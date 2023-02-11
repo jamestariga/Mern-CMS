@@ -12,9 +12,6 @@ const Layout = React.lazy(() =>
   wait(1000).then(() => import('@/components/Layout'))
 )
 const Admin = React.lazy(() => wait(1000).then(() => import('@/pages/Admin')))
-const Populations = React.lazy(() =>
-  wait(1000).then(() => import('@/components/Populations'))
-)
 const Home = React.lazy(() => wait(1000).then(() => import('@/pages/Home')))
 const Register = React.lazy(() =>
   wait(500).then(() => import('@/pages/Register'))
@@ -49,9 +46,6 @@ const App = () => {
             </Route>
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               <Route path='/home' element={<Home />} />
-            </Route>
-            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-              <Route path='/population' element={<Populations />} />
             </Route>
           </Route>
         </Route>
