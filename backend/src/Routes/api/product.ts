@@ -1,12 +1,8 @@
 import express, { Router } from 'express'
 import {
   createProduct,
-  getProducts,
-  getProduct,
   updateProduct,
   deleteProduct,
-  createReview,
-  deleteReview,
 } from '../../Controller/productController'
 import upload from '../../Configs/multer'
 import verifyRoles from '../../Middleware/verifyRoles'
@@ -16,13 +12,16 @@ const router: Router = express.Router()
 
 router
   .route('/')
-  .get(getProducts)
-  .post(upload.single('image'), createProduct)
-  .put(updateProduct)
-  .delete(deleteProduct)
-
-router.route('/:slug').get(getProduct)
-
-router.route('/:slug/reviews').post(createReview).delete(deleteReview)
+  .post(
+    verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
+    upload.single('image'),
+    createProduct
+  )
+  .put(
+    verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),
+    upload.single('image'),
+    updateProduct
+  )
+  .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), deleteProduct)
 
 export default router
