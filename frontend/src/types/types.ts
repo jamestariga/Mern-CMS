@@ -62,7 +62,11 @@ export interface IProduct {
 }
 
 export interface Product {
-  data: IProduct[]
+  data: IProduct[] | undefined
+}
+
+export interface ProductByID {
+  data: IProduct
 }
 
 export interface IContent {
