@@ -20,6 +20,9 @@ const Login = React.lazy(() => wait(500).then(() => import('@/pages/Login')))
 const PersistLogin = React.lazy(() =>
   wait(1000).then(() => import('@/Container/PersistLogin'))
 )
+const Product = React.lazy(() =>
+  wait(1000).then(() => import('@/pages/ProductID'))
+)
 const RequireAuth = React.lazy(() =>
   wait(1000).then(() => import('@/Container/RequireAuth'))
 )
@@ -46,6 +49,9 @@ const App = () => {
             </Route>
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               <Route path='/home' element={<Home />} />
+            </Route>
+            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+              <Route path='/product/:id' element={<Product />} />
             </Route>
           </Route>
         </Route>
