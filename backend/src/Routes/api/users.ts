@@ -13,11 +13,13 @@ const router: Router = express.Router()
 
 router
   .route('/')
-  .get(getAllUsers)
-  .post(createUser)
-  .put(updateUser)
-  .delete(deleteUser)
+  .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), getAllUsers)
+  .post(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), createUser)
+  .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), updateUser)
+  .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), deleteUser)
 
-router.route('/:id').get(getUserById)
+router
+  .route('/:id')
+  .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), getUserById)
 
 export default router
