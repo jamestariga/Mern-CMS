@@ -39,9 +39,10 @@ const Admin = () => {
 
   return (
     <>
-      <header>Admin</header>
-      <CreateProduct axiosPrivate={axiosPrivate} />
-      <DeleteProduct data={productData} axiosPrivate={axiosPrivate} />
+      <header className='flex flex-col items-center justify-center'>
+        <CreateProduct axiosPrivate={axiosPrivate} />
+        <DeleteProduct data={productData} axiosPrivate={axiosPrivate} />
+      </header>
     </>
   )
 }
