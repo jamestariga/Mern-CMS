@@ -34,8 +34,7 @@ const NavBar = () => {
   useEventListener('scroll', handleScroll)
 
   const isAuthorized = auth.isAuthorized
-
-  console.log('isAuthorized', isAuthorized)
+  const isLoggedIn = auth.accessToken !== '' || auth.refreshToken !== ''
 
   return (
     <>
@@ -92,14 +91,16 @@ const NavBar = () => {
                     Login
                   </NavLink>
                 </li>
-                <li>
-                  <button
-                    className='btn bg-blue-700 text-white border-none hover:bg-blue-600'
-                    onClick={handleLogout}
-                  >
-                    Sign out
-                  </button>
-                </li>
+                {isLoggedIn && (
+                  <li>
+                    <button
+                      className='btn bg-blue-700 text-white border-none hover:bg-blue-600'
+                      onClick={handleLogout}
+                    >
+                      Sign out
+                    </button>
+                  </li>
+                )}
               </ul>
             )}
           </div>
@@ -144,14 +145,16 @@ const NavBar = () => {
             )}
           </ul>
         </div>
-        <div className='hidden lg:flex lg:justify-end w-full lg:w-2/6 px-8'>
-          <button
-            className='btn bg-blue-700 text-white border-none hover:bg-blue-600'
-            onClick={handleLogout}
-          >
-            Sign out
-          </button>
-        </div>
+        {isLoggedIn && (
+          <div className='hidden lg:flex lg:justify-end w-full lg:w-2/6 px-8'>
+            <button
+              className='btn bg-blue-700 text-white border-none hover:bg-blue-600'
+              onClick={handleLogout}
+            >
+              Sign out
+            </button>
+          </div>
+        )}
       </nav>
     </>
   )
