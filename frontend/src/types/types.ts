@@ -34,7 +34,7 @@ export interface User {
   data: UserRequest[]
 }
 
-interface Image {
+export interface IImage {
   url: string
   public_id: string
 }
@@ -58,7 +58,7 @@ export interface IProduct {
   description: string
   reviews: Review[]
   stock: number
-  image: Image
+  image: IImage
 }
 
 export interface Product {
@@ -114,4 +114,22 @@ export interface ICreateProduct {
 
 export interface IDeleteProduct extends ICreateProduct {
   data: IProduct[] | undefined
+}
+
+export interface IModalProps {
+  showModal: boolean
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  updateProductMutate: any
+  handleChange: any
+  handleFileChange: any
+  product: IProduct
+  title: string
+}
+
+export interface ITicket {
+  title: string
+  description: string
+  status: any
+  priority: any
+  type: string
 }
