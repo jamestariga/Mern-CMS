@@ -6,16 +6,29 @@ import {
   updateTicket,
   deleteTicket,
 } from '../../Controller/ticketController'
+import verifyRoles from '../../Middleware/verifyRoles'
+import ROLES_LIST from '../../Configs/rolesList'
 
 const router: Router = express.Router()
 
 router
   .route('/')
-  .get(getAllTickets)
-  .post(createTicket)
-  .put(updateTicket)
-  .delete(deleteTicket)
+  .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), getAllTickets)
+  .post(
+    verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor, ROLES_LIST.User),
+    createTicket
+  )
+  .put(
+    verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor, ROLES_LIST.User),
+    updateTicket
+  )
+  .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), deleteTicket)
 
-router.route('/:id').get(getTicketById)
+router
+  .route('/:id')
+  .get(
+    verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor, ROLES_LIST.User),
+    getTicketById
+  )
 
 export default router
