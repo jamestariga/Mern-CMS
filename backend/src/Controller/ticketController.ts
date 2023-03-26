@@ -1,15 +1,15 @@
 import Ticket, { Tickets } from '../Model/Ticket'
 
 enum priority {
-  low = 'Low',
-  medium = 'Medium',
-  high = 'High',
+  Low = 'Low',
+  Medium = 'Medium',
+  High = 'High',
 }
 
 enum status {
-  open = 'Open',
-  inProgress = 'In Progress',
-  closed = 'Closed',
+  Open = 'Open',
+  Progress = 'Progress',
+  Closed = 'Closed',
 }
 
 interface Response {
@@ -32,32 +32,46 @@ interface Request {
   }
 }
 
+interface ITicket {
+  title: string
+  description: string
+  status: status
+  priority: priority
+  type: string
+}
+
 export const createTicket = async (req: Request, res: Response) => {
-  if (
-    !req?.body?.title ||
-    !req?.body?.description ||
-    !req?.body?.status ||
-    !req?.body?.priority ||
-    !req?.body?.type
-  ) {
-    return res.status(400).json({ message: 'Missing required fields' })
+  const {
+    title,
+    description,
+    status: ticketStatus,
+    priority: ticketPriority,
+    type,
+  }: any = req.body
+
+  if (!title) {
+    return res.status(400).json({ message: 'Missing title fields' })
   }
 
-  if (
-    req?.body?.priority !== priority.low &&
-    req?.body?.priority !== priority.medium &&
-    req?.body?.priority !== priority.high
-  ) {
+  if (!description) {
+    return res.status(400).json({ message: 'Missing description fields' })
+  }
+
+  if (!ticketStatus) {
+    return res.status(400).json({ message: 'Missing status fields' })
+  }
+
+  if (!ticketPriority) {
+    return res.status(400).json({ message: 'Missing priority fields' })
+  }
+
+  if (!(ticketPriority in priority)) {
     return res
       .status(400)
       .json({ message: 'Priority must be low, medium, or high' })
   }
 
-  if (
-    req?.body?.status !== status.open &&
-    req?.body?.status !== status.inProgress &&
-    req?.body?.status !== status.closed
-  ) {
+  if (!(ticketStatus in status)) {
     return res
       .status(400)
       .json({ message: 'Status must be open, in progress, or closed' })
@@ -65,11 +79,11 @@ export const createTicket = async (req: Request, res: Response) => {
 
   try {
     const result: Tickets = await Ticket.create({
-      title: req.body.title,
-      description: req.body.description,
-      status: req.body.status,
-      priority: req.body.priority,
-      type: req.body.type,
+      title,
+      description,
+      status: ticketStatus,
+      priority: ticketPriority,
+      type,
     })
     res.status(201).send(result)
   } catch (err) {
@@ -113,9 +127,9 @@ export const updateTicket = async (req: Request, res: Response) => {
   }
 
   if (
-    req?.body?.priority !== priority.low &&
-    req?.body?.priority !== priority.medium &&
-    req?.body?.priority !== priority.high
+    req?.body?.priority !== priority.Low &&
+    req?.body?.priority !== priority.Medium &&
+    req?.body?.priority !== priority.High
   ) {
     return res
       .status(400)
@@ -123,9 +137,9 @@ export const updateTicket = async (req: Request, res: Response) => {
   }
 
   if (
-    req?.body?.status !== status.open &&
-    req?.body?.status !== status.inProgress &&
-    req?.body?.status !== status.closed
+    req?.body?.status !== status.Open &&
+    req?.body?.status !== status.Progress &&
+    req?.body?.status !== status.Closed
   ) {
     return res
       .status(400)
