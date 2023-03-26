@@ -26,6 +26,7 @@ const Product = React.lazy(() =>
 const RequireAuth = React.lazy(() =>
   wait(1000).then(() => import('@/Container/RequireAuth'))
 )
+const Ticket = React.lazy(() => wait(1000).then(() => import('@/pages/Ticket')))
 import { ROLES } from '@/utils/helpers'
 
 const App = () => {
@@ -52,6 +53,15 @@ const App = () => {
             </Route>
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               <Route path='/product/:id' element={<Product />} />
+            </Route>
+            <Route
+              element={
+                <RequireAuth
+                  allowedRoles={[ROLES.Admin, ROLES.Editor, ROLES.User]}
+                />
+              }
+            >
+              <Route path='/ticket' element={<Ticket />} />
             </Route>
           </Route>
         </Route>
