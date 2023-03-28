@@ -30,6 +30,7 @@ const Modal = ({
   handleChange,
   handleFileChange,
   product,
+  title,
 }: IModalProps) => {
   const handleClick = () => {
     setShowModal((prev) => !prev)
@@ -49,6 +50,7 @@ const Modal = ({
             <button className='absolute right-10 top-2' onClick={handleClick}>
               <AiFillCloseCircle className='w-6 h-6' />
             </button>
+            <h1 className='text-xl font-bold'>{title}</h1>
             <form
               onSubmit={updateProductMutate.mutate}
               className='flex flex-col items-center justify-center w-72 sm:w-96'
