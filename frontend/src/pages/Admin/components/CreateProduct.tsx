@@ -1,19 +1,24 @@
-import React, { useState } from 'react'
-import { ICreateProduct } from '@/types/types'
+import { useState } from 'react'
+import { ICreateProduct, IProduct } from '@/types/types'
 import { useMutation } from '@tanstack/react-query'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 
 const CreateProduct = (props: ICreateProduct) => {
   const { axiosPrivate } = props
-  const [product, setProduct] = useState({
+  const [product, setProduct] = useState<IProduct>({
     name: '',
     slug: '',
     brand: '',
     description: '',
-    price: '',
+    price: 0,
     category: '',
-    stock: '',
-    image: '',
+    stock: 0,
+    image: {
+      url: '',
+      public_id: '',
+    },
+    _id: '',
+    reviews: [],
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,10 +37,10 @@ const CreateProduct = (props: ICreateProduct) => {
     formData.append('slug', product.slug)
     formData.append('brand', product.brand)
     formData.append('description', product.description)
-    formData.append('price', product.price)
+    formData.append('price', product.price as any)
     formData.append('category', product.category)
-    formData.append('stock', product.stock)
-    formData.append('image', product.image)
+    formData.append('stock', product.stock as any)
+    formData.append('image', product.image as any)
 
     try {
       const response = await axiosPrivate.post('/product', formData, {
