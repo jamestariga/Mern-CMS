@@ -15,6 +15,7 @@ import register from './Routes/register'
 import auth from './Routes/auth'
 import logout from './Routes/logout'
 import refresh from './Routes/refresh'
+import payment from './Routes/api/payment'
 import verifyJWT from './Middleware/verifyJWT'
 
 const PORT = process.env.PORT || 3001
@@ -47,6 +48,7 @@ app.use('/auth', auth)
 app.use('/logout', logout)
 app.use('/refresh', refresh)
 app.use('/publicProducts', publicProduct)
+app.use('/api', payment)
 
 app.use(verifyJWT)
 
