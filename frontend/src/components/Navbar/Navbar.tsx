@@ -153,6 +153,16 @@ const NavBar = () => {
                 Ticket
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to='/cart'
+                className={({ isActive }) =>
+                  isActive ? `bg-blue-700 text-white` : `text-gray-400`
+                }
+              >
+                Cart
+              </NavLink>
+            </li>
           </ul>
         </div>
         {isLoggedIn && (
