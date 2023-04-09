@@ -132,4 +132,21 @@ export interface ITicket {
   status: any
   priority: any
   type: string
+  _id?: string
+}
+
+export interface Tickets {
+  data: ITicket[] | undefined
+}
+
+export interface CartItem {
+  id: number
+  name: string
+  price: number
+  quantity: number
+}
+
+export interface Cart {
+  items: CartItem[]
+  total: number
 }
