@@ -90,6 +90,22 @@ const NavBar = () => {
                   >
                     Login
                   </NavLink>
+                  <NavLink
+                    to='/ticket'
+                    className={({ isActive }) =>
+                      isActive ? `bg-blue-700 text-white` : `text-gray-400`
+                    }
+                  >
+                    Ticket
+                  </NavLink>
+                  <NavLink
+                    to='/cart'
+                    className={({ isActive }) =>
+                      isActive ? `bg-blue-700 text-white` : `text-gray-400`
+                    }
+                  >
+                    Cart
+                  </NavLink>
                 </li>
                 {isLoggedIn && (
                   <li>

@@ -23,8 +23,7 @@ const Ticket = () => {
     status: status.Open,
     type: '',
   })
-
-  console.log(ticket)
+  const [successMessage, setSuccessMessage] = useState<string>('')
 
   const axiosPrivate = useAxiosPrivate()
 
@@ -52,7 +51,7 @@ const Ticket = () => {
         withCredentials: true,
       })
 
-      console.log(response)
+      setSuccessMessage('Ticket created successfully!')
     } catch (error: any) {
       console.log(error.response.data.message)
     }
@@ -63,6 +62,10 @@ const Ticket = () => {
   return (
     <>
       <header className='flex flex-col items-center justify-center'>
+        <h1 className='text-2xl font-bold py-6'>Create Ticket</h1>
+        {successMessage && (
+          <p className='text-green-500 font-bold text-xl'>{successMessage}</p>
+        )}
         <form
           onSubmit={createTicketMutation.mutate}
           className='flex flex-col w-full px-6 md:w-2/3'
@@ -82,7 +85,7 @@ const Ticket = () => {
             <div className='flex flex-col items-center justify-center w-full'>
               <label htmlFor='description'>Description</label>
               <textarea
-                className='w-full px-2 py-1 mt-1 h-72 resize-none border border-gray-300 rounded focus:outline-none focus:border-blue-300'
+                className='w-full px-2 py-1 mt-1 h-72 resize-none bg-white border border-gray-300 rounded focus:outline-none focus:border-blue-300'
                 name='description'
                 onChange={handleChangeTextArea}
               />
@@ -92,7 +95,7 @@ const Ticket = () => {
             <div className='flex flex-col items-center justify-center w-full'>
               <label htmlFor='priority'>Priority</label>
               <select
-                className='w-full px-2 py-1 mt-1 border border-gray-300 rounded focus:outline-none focus:border-blue-300'
+                className='w-full px-2 py-1 mt-1 bg-white border border-gray-300 rounded focus:outline-none focus:border-blue-300'
                 name='priority'
                 value={ticket.priority}
                 onChange={handleChangeSelect}
@@ -107,7 +110,7 @@ const Ticket = () => {
             <div className='flex flex-col items-center justify-center w-full'>
               <label htmlFor='status'>Status</label>
               <select
-                className='w-full px-2 py-1 mt-1 border border-gray-300 rounded focus:outline-none focus:border-blue-300'
+                className='w-full px-2 py-1 mt-1 bg-white border border-gray-300 rounded focus:outline-none focus:border-blue-300'
                 name='status'
                 value={ticket.status}
                 onChange={handleChangeSelect}
