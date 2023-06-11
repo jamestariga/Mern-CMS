@@ -22,7 +22,6 @@ router
     verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor, ROLES_LIST.User),
     updateTicket
   )
-  .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), deleteTicket)
 
 router
   .route('/:id')
@@ -30,5 +29,6 @@ router
     verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor, ROLES_LIST.User),
     getTicketById
   )
+  .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), deleteTicket)
 
 export default router

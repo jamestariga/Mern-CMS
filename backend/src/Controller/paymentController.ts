@@ -2,9 +2,10 @@ import Stripe from 'stripe'
 import { Request, Response } from 'express'
 
 interface CartItem {
-  id: number
+  _id: number
   name: string
   price: number
+  image: any
   quantity: number
 }
 
@@ -21,7 +22,7 @@ export const createPaymentIntent = async (req: Request, res: Response) => {
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      amount,
+      amount: Math.floor(amount * 100), // multiplying by 100 to convert to cents and rounding down to the nearest integer
       currency,
     })
 
@@ -51,8 +52,6 @@ export const getCartItems = (req: Request, res: Response) => {
     return acc + item.price * item.quantity
   }, 0)
 
-  console.log('getCart', cartItems)
-
   res.status(200).json({
     items: cartItems,
     total,
@@ -63,7 +62,7 @@ export const addToCart = (req: Request, res: Response) => {
   const item: CartItem = req.body
 
   // Check if item is already in cart
-  const existingItemIndex = cartItems.findIndex((i) => i.id === item.id)
+  const existingItemIndex = cartItems.findIndex((i) => i._id === item._id)
   if (existingItemIndex !== -1) {
     // If item already exists, update its quantity
     const existingItem = cartItems[existingItemIndex]
@@ -83,10 +82,11 @@ export const addToCart = (req: Request, res: Response) => {
 }
 
 export const removeFromCart = (req: Request, res: Response) => {
-  const itemId: number = Number(req.params.itemId)
+  const itemId: any = req.body._id
+  console.log(req.body._id)
 
   // Remove item from cart
-  cartItems = cartItems.filter((i) => i.id !== itemId)
+  cartItems = cartItems.filter((i) => i._id !== itemId)
 
   res.status(200).json({ message: 'Item removed from cart.' })
 }

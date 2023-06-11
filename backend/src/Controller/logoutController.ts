@@ -4,13 +4,13 @@ import { Request, Response } from 'express'
 export const handleLogout = async (req: Request, res: Response) => {
   const cookies = req.cookies
 
-  if (!cookies.jwt) return res.sendStatus(204)
+  if (!cookies?.jwt) return res.sendStatus(204)
 
   const refreshToken = cookies.jwt
 
   // Finding a user in the database with the refreshToken that is in the cookie
   const foundUser: Users | null = await User.findOne({
-    refreshToken: refreshToken,
+    refreshToken,
   }).exec()
 
   if (!foundUser) {
@@ -18,7 +18,7 @@ export const handleLogout = async (req: Request, res: Response) => {
       httpOnly: true,
       sameSite: 'none',
       // Add secure: true when using https
-      // secure: true,
+      secure: true,
     })
     return res.sendStatus(204)
   }
@@ -32,7 +32,7 @@ export const handleLogout = async (req: Request, res: Response) => {
     httpOnly: true,
     sameSite: 'none',
     // Add secure: true when using https
-    // secure: true,
+    secure: true,
   })
 
   res.sendStatus(204)

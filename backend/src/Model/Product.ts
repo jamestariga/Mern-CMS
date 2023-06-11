@@ -18,6 +18,7 @@ export interface Products extends Document<Types.ObjectId> {
   reviews: Reviews[]
   numReviews: number
   rating: number
+  quantity: number
   image: {
     public_id: string
     url: string
@@ -78,6 +79,10 @@ const ProductSchema = new Schema<Products>(
     stock: {
       type: Number,
       required: true,
+    },
+    quantity: {
+      type: Number,
+      default: 1,
     },
     reviews: [ReviewSchema],
     numReviews: {

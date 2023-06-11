@@ -19,6 +19,7 @@ export const createProduct = async (
     reviews,
     numReviews,
     rating,
+    quantity,
   }: Products = req.body
 
   const image = req.file?.path || ''
