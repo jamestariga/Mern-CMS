@@ -58,6 +58,7 @@ export interface IProduct {
   description: string
   reviews: Review[]
   stock: number
+  quantity?: number
   image: IImage
 }
 
@@ -140,10 +141,14 @@ export interface Tickets {
 }
 
 export interface CartItem {
-  id: number
   name: string
   price: number
-  quantity: number
+  image: IImage
+  description: string
+  slug: string
+  brand: string
+  quantity?: number
+  _id: string
 }
 
 export interface Cart {
