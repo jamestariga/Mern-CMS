@@ -4,17 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { Product } from '@/types/types'
 import CreateProduct from './components/CreateProduct'
 import DeleteProduct from './components/DeleteProduct'
-
-const postProduct = async (axiosPrivate: any) => {
-  const abortController = new AbortController()
-
-  const response = await axiosPrivate.post('/products', {
-    signal: abortController.signal,
-  })
-  console.log(response.data)
-
-  return response.data
-}
+import TicketList from './components/TicketList'
 
 const Admin = () => {
   const axiosPrivate = useAxiosPrivate()
@@ -42,6 +32,7 @@ const Admin = () => {
       <header className='flex flex-col items-center justify-center'>
         <CreateProduct axiosPrivate={axiosPrivate} />
         <DeleteProduct data={productData} axiosPrivate={axiosPrivate} />
+        <TicketList axiosPrivate={axiosPrivate} />
       </header>
     </>
   )

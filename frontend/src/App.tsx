@@ -28,7 +28,11 @@ const RequireAuth = React.lazy(() =>
 )
 const Ticket = React.lazy(() => wait(1000).then(() => import('@/pages/Ticket')))
 const Cart = React.lazy(() => wait(1000).then(() => import('@/pages/Cart')))
+const Checkout = React.lazy(() =>
+  wait(1000).then(() => import('@/pages/Checkout'))
+)
 import { ROLES } from '@/utils/helpers'
+import LoadingSpinner from './components/LoadingSpinner'
 
 const App = () => {
   const queryClient = new QueryClient({
@@ -58,6 +62,9 @@ const App = () => {
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               <Route path='/cart' element={<Cart />} />
             </Route>
+            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+              <Route path='/checkout' element={<Checkout />} />
+            </Route>
             <Route
               element={
                 <RequireAuth
@@ -75,7 +82,7 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LoadingSpinner />}>
         <RouterProvider router={router} />
       </Suspense>
       <ReactQueryDevtools initialIsOpen={false} />

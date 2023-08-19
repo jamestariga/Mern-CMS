@@ -140,6 +140,7 @@ const DeleteProduct = (props: IDeleteProduct) => {
             handleChange={handleChange}
             handleFileChange={handleFileChange}
             product={product}
+            title='Update Product'
           />
         )}
       </AnimatePresence>

@@ -18,7 +18,7 @@ const useAxiosPrivate = () => {
       (error) => Promise.reject(error)
     )
 
-    console.log('useAxiosPrivate' + auth?.accessToken)
+    // console.log('useAxiosPrivate' + auth?.accessToken)
 
     const responseInterceptor = cmsApiPrivate.interceptors.response.use(
       (response) => response,

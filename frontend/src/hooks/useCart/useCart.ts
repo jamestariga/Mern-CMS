@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Cart, CartItem } from '@/types/types'
 
 const initialCart: Cart = {
@@ -9,27 +9,40 @@ const initialCart: Cart = {
 const useCart = () => {
   const [cart, setCart] = useState(initialCart)
 
+  // useEffect(() => {
+  //   const savedCart = localStorage.getItem('cart')
+  //   if (savedCart) {
+  //     setCart(JSON.parse(savedCart))
+  //   }
+  // }, [])
+
+  // useEffect(() => {
+  //   localStorage.setItem('cart', JSON.stringify(cart))
+  // }, [cart])
+
   const addItem = (item: CartItem) => {
     setCart((prevCart) => {
       const existingItemIndex = prevCart.items.findIndex(
-        (i) => i.id === item.id
+        (i) => i._id === item._id
       )
 
       if (existingItemIndex !== -1) {
         const updatedItems = [...prevCart.items]
-        updatedItems[existingItemIndex].quantity += item.quantity
+        const existingItem = updatedItems[existingItemIndex]
+        existingItem.quantity = existingItem.quantity || 0
+        existingItem.quantity += item.quantity || 1
 
         return {
           ...prevCart,
           items: updatedItems,
-          total: prevCart.total + item.price * item.quantity,
+          total: prevCart.total + item.price * (item.quantity || 1),
         }
       }
 
       return {
         ...prevCart,
-        items: [...prevCart.items, item],
-        total: prevCart.total + item.price * item.quantity,
+        items: [...prevCart.items, { ...item, quantity: item.quantity || 1 }],
+        total: prevCart.total + item.price * (item.quantity || 1),
       }
     })
   }
@@ -37,7 +50,7 @@ const useCart = () => {
   const removeItem = (itemId: string) => {
     setCart((prevCart) => {
       const itemToRemoveIndex = prevCart.items.findIndex(
-        (i) => i.id === Number(itemId)
+        (i) => i._id === itemId
       )
 
       if (itemToRemoveIndex !== -1) {
@@ -48,7 +61,8 @@ const useCart = () => {
         return {
           ...prevCart,
           items: updatedItems,
-          total: prevCart.total - itemToRemove.price * itemToRemove.quantity,
+          total:
+            prevCart.total - itemToRemove.price * (itemToRemove.quantity || 1),
         }
       }
 
@@ -58,14 +72,20 @@ const useCart = () => {
 
   const clearCart = () => {
     setCart(initialCart)
+    localStorage.removeItem('cart')
   }
 
-  return {
-    cart,
-    addItem,
-    removeItem,
-    clearCart,
-  }
+  const memoizedCart = useMemo(
+    () => ({
+      cart,
+      addItem,
+      removeItem,
+      clearCart,
+    }),
+    [cart, addItem, removeItem, clearCart]
+  )
+
+  return memoizedCart
 }
 
 export default useCart

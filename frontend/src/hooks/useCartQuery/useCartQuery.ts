@@ -8,12 +8,15 @@ const useCartQuery = () => {
     // Fetch cart items from API
     const response = await axiosPrivate.get('/api/cart')
     const cartItems = response.data
-    console.log(cartItems)
 
     // Calculate total price of cart
-    const total = cartItems.reduce((acc: number, item: CartItem) => {
-      return acc + item.price * item.quantity
-    }, 0)
+    const total: number = cartItems.items.reduce(
+      (acc: number, item: CartItem) => {
+        const quantity = item.quantity ? item.quantity : 0
+        return acc + item.price * quantity
+      },
+      0
+    )
 
     return {
       items: cartItems,

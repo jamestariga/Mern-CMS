@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+// import useCart from '@/hooks/useCart'
 import { IContent, IProduct } from '@/types/types'
 import { Card, Button } from 'react-daisyui'
 import { Link } from 'react-router-dom'
@@ -6,31 +7,60 @@ import useAddToCartMutation from '@/hooks/useAddToCartMutation'
 
 const Content = (props: IContent) => {
   const { data, title } = props
+  // const { cart, addItem, removeItem } = useCart()
   const addToCartMutation = useAddToCartMutation()
   const [cartMessage, setCartMessage] = useState<string>('')
-  const [cartItems, setCartItems] = useState<any>([])
+
+  useEffect(() => {
+    return () => {
+      setCartMessage('')
+    }
+  }, [])
 
   const handleAddToCart = async (item: IProduct) => {
-    const { name, price, image, _id } = item
+    const { name, price, image, description, slug, brand, quantity, _id } = item
     try {
-      await addToCartMutation.mutate({ name, price, image, itemId: _id })
+      await addToCartMutation.mutate({
+        name,
+        price,
+        image,
+        description,
+        slug,
+        brand,
+        quantity,
+        _id,
+      })
       setCartMessage(`Added ${name} to cart!`)
-      setCartItems([...cartItems, { name, price, image, itemId: _id }])
     } catch (err) {
       setCartMessage('Failed to add item to cart')
       console.error(err)
     }
   }
 
+  // const handleAddToCart = async (item: IProduct) => {
+  //   const { name, price, image, description, slug, brand, quantity, _id } = item
+  //   addItem({
+  //     name,
+  //     price,
+  //     image,
+  //     description,
+  //     slug,
+  //     brand,
+  //     quantity,
+  //     _id,
+  //   })
+  // }
+
   return (
     <>
-      <h1 className='text-xl font-bold pb-10'>{title}</h1>
+      <h1 className='text-2xl text-white font-bold pb-6'>{title}</h1>
+      <p className='text-green-500 font-semibold text-xl p-4'>{cartMessage}</p>
       <div className='grid sm:grid-cols-2 xl:grid-cols-4 items-center justify-center gap-4 xl:gap-8 px-10'>
         {data?.map((item: IProduct) => (
           <Card
             key={item._id}
             bordered={true}
-            className='rounded-2xl overflow-hidden border-zinc-200 border-2'
+            className='rounded-2xl overflow-hidden bg-blue-900 shadow-xl'
           >
             <Link to={`/product/${item.slug}`} key={item._id}>
               <Card.Image
@@ -38,7 +68,7 @@ const Content = (props: IContent) => {
                 className='overflow-hidden hover:scale-[1.1] transition h-full w-full'
               />
             </Link>
-            <Card.Body className='items-center text-center'>
+            <Card.Body className='items-center text-center text-white'>
               <Card.Title>{item.name}</Card.Title>
               <p className='text-base'>{item.description}</p>
               <p className='text-base font-semibold'>{`$${item.price}`}</p>
@@ -50,7 +80,6 @@ const Content = (props: IContent) => {
                   Add to cart
                 </Button>
               </Card.Actions>
-              <p className='text-green-500 font-semibold mt-2'>{cartMessage}</p>
             </Card.Body>
           </Card>
         ))}
